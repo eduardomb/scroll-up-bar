@@ -10,7 +10,7 @@
         $document = $(document),
         $topbar = this,
         topbarHeight = $topbar.outerHeight(),
-        lastY = 0, // Keep track of the last Y to detect scroll's direction.
+        lastY = 0, // Keep track of the last Y to detect scroll direction.
         revealing = false, // Indicate if the bar's reveal is in progress.
         timeout;
 
@@ -28,7 +28,7 @@
       }
 
       if (y < lastY) { // Scrolling up
-        // The first scrollup places the bar right above the top frame.
+        // The first scroll up places the bar right above the top frame.
         if (!revealing) {
           revealing = true;
 
@@ -37,7 +37,7 @@
           }
         }
 
-        // Scrollups bigger than the bar's height fixes the bar on top.
+        // Scrolls up bigger than the bar's height fixes the bar on top.
         if (parseInt($topbar.css('top')) > y) {
           $topbar.css({
             'position': 'fixed',
@@ -60,7 +60,7 @@
       } else { // Scrolling down
         revealing = false;
 
-        // The first scrolldown unfixes the bar allowing it to scroll with the
+        // The first scroll down unfixes the bar allowing it to scroll with the
         // page.
         if ($topbar.css('position') == 'fixed') {
           $topbar.css({
