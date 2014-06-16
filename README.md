@@ -11,7 +11,7 @@ some precious space.
 Include [jQuery](http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js) and `scroll-up-bar.min.js` scripts:
 ```html
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="jquery.panelslider.min.js"></script>
+<script src="scroll-up-bar.min.js"></script>
 ```
 
 [Bower](https://github.com/bower/bower) users can get the source with:
@@ -31,5 +31,5 @@ Create a fixed top bar.
 
 and then invoke `scrollupbar()` on the element.
 ```javascript
-$('#topbar').panelslider();
+$('#topbar').scrollupbar();
 ```
