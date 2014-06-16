@@ -1,7 +1,7 @@
 {
   "name": "scroll-up-bar",
   "main": "scroll-up-bar.min.js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/eduardomb/scroll-up-bar",
   "authors": [
     "Eduardo Barbosa <eduardomb@ufmg.br>"
