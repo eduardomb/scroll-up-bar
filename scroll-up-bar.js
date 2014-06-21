@@ -26,7 +26,6 @@
       if (y < 0 || y > ($document.height() - $window.height())) {
         return;
       }
-
       if (y < lastY) { // Scrolling up
         // The first scroll up places the bar right above the top frame.
         if (!revealing) {
@@ -57,7 +56,7 @@
             $topbar.animate({'top': 0}, 100);
           }
         }, 400);
-      } else { // Scrolling down
+      } else if ( y > lastY ) { // Scrolling down
         revealing = false;
 
         // The first scroll down unfixes the bar allowing it to scroll with the
