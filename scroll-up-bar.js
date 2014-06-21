@@ -26,8 +26,8 @@
       if (y < 0 || y > ($document.height() - $window.height())) {
         return;
       }
-
-      if (y < lastY) { // Scrolling up
+      if (y==lastY){return;}
+      else if (y < lastY) { // Scrolling up
         // The first scroll up places the bar right above the top frame.
         if (!revealing) {
           revealing = true;
