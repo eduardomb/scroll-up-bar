@@ -57,7 +57,7 @@
             $topbar.animate({'top': 0}, 100);
           }
         }, 400);
-      } else { // Scrolling down
+      } else if ( y > lastY ) { // Scrolling down
         revealing = false;
 
         // The first scroll down unfixes the bar allowing it to scroll with the
