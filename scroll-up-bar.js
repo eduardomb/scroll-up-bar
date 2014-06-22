@@ -32,8 +32,8 @@
         if (!revealing) {
           revealing = true;
 
-          if (y > topbarHeight) {
-            $topbar.css('top', y - topbarHeight);
+          if (lastY > topbarHeight) {
+            $topbar.css('top', lastY - topbarHeight);
           }
         }
 
@@ -57,7 +57,7 @@
             $topbar.animate({'top': 0}, 100);
           }
         }, 400);
-      } else if ( y > lastY ) { // Scrolling down
+      } else if (y > lastY) { // Scrolling down
         revealing = false;
 
         // The first scroll down unfixes the bar allowing it to scroll with the
@@ -65,7 +65,7 @@
         if ($topbar.css('position') == 'fixed') {
           $topbar.css({
             'position': 'absolute',
-            'top': y
+            'top': lastY
           });
         }
 
