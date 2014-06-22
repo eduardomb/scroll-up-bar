@@ -1,0 +1,30 @@
+{
+  "undef": true,
+  "unused": true,
+  "camelcase": true,
+  "curly": true,
+  "indent": 2,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "quotmark": "single",
+  "strict": true,
+  "trailing": true,
+  "maxlen": 79,
+  "browser": true,
+  "jquery": true,
+  "globals": {
+      "jQuery": true,
+      "module": true,
+      "document": true,
+      "describe": true,
+      "jasmine": true,
+      "it": true,
+      "loadFixtures": true,
+      "loadStyleFixtures": true,
+      "expect": true,
+      "beforeEach": true
+   }
+}
