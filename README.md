@@ -33,3 +33,7 @@ and then invoke `scrollupbar()` on the element.
 ```javascript
 $('#topbar').scrollupbar();
 ```
+
+## Contributing
+
+Read the [Contributing document](CONTRIBUTING.md) for instructions on how to set up your development environment to build and test scroll-up-bar.
