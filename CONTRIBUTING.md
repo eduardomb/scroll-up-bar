@@ -11,22 +11,22 @@ Dependencies for building from source and running tests:
 
 Use Grunt to generate the non-minified and minified scroll-up-bar files:
 
-    ```shell
-    # Clone your Github repository:
-    git clone git@github.com:<github username>/scroll-up-bar.git
+```shell
+# Clone your Github repository:
+git clone git://github.com:<github username>/scroll-up-bar.git
 
-    # Go to the scroll-up-bar directory:
-    cd scroll-up-bar
+# Go to the scroll-up-bar directory:
+cd scroll-up-bar
 
-    # Install node.js dependencies:
-    npm install
+# Install node.js dependencies:
+npm install
 
-    # Install bower components:
-    bower install
+# Install bower components:
+bower install
 
-    # Build scroll-up-bar:
-    grunt build
-    ```
+# Build scroll-up-bar:
+grunt build
+```
 
 ## Code Style
 

@@ -34,6 +34,16 @@ and then invoke `scrollupbar()` on the element.
 $('#topbar').scrollupbar();
 ```
 
+## Browser support
+
+The plugin was tested on:
+
+* Chrome
+* Firefox
+* Safari
+* Opera
+* IE
+
 ## Contributing
 
 Read the [Contributing document](CONTRIBUTING.md) for instructions on how to set up your development environment to build and test scroll-up-bar.
