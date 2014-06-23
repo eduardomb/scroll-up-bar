@@ -1,6 +1,6 @@
 {
   "name": "scroll-up-bar",
-  "main": "scroll-up-bar.min.js",
+  "main": "dist/scroll-up-bar.min.js",
   "version": "0.1.0",
   "homepage": "https://github.com/eduardomb/scroll-up-bar",
   "authors": [

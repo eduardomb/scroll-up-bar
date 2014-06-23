@@ -1,3 +1,4 @@
+/* scroll-up-bar v0.1.0 (https://github.com/eduardomb/scroll-up-bar) */
 (function($) {
   'use strict';
 
