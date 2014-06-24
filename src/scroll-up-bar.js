@@ -13,14 +13,14 @@
     $window.scroll(function() {
       var y = $window.scrollTop();
 
-      // Cancel the event fired by the previous scroll.
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-
       // Ignore elastic scrolling.
       if (y < 0 || y > ($document.height() - $window.height())) {
         return;
+      }
+
+      // Cancel the event fired by the previous scroll.
+      if (timeout) {
+        clearTimeout(timeout);
       }
 
       if (y < lastY) { // Scrolling up
