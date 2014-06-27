@@ -7,78 +7,91 @@
         $document = $(document),
         $topbar = this,
         topbarHeight = $topbar.outerHeight(),
-        lastY = 0, // Keep track of the last Y to detect scroll direction.
-        revealing = false, // Indicate if the bar's reveal is in progress.
+        lastY = $window.scrollTop(), // Use last Y to detect scroll direction.
+        iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
         timeout;
 
-    $window.scroll(function() {
-      var y = $window.scrollTop();
+    // iOS can't handle momentum scroll properly (See discussion on
+    // http://stackoverflow.com/questions/2863547).
+    if (!iOS) {
+      $window.scroll(function() {
+        var y = $window.scrollTop(),
+            offsetBottom = $topbar.offset().top + topbarHeight,
+            barIsHidden = offsetBottom <= y && y >= topbarHeight;
 
-      // Cancel the event fired by the previous scroll.
-      if (timeout) {
-        clearTimeout(timeout);
-      }
+        // Ignore elastic scrolling.
+        if (y < 0 || y > ($document.height() - $window.height())) {
+          return;
+        }
 
-      // Ignore elastic scrolling.
-      if (y < 0 || y > ($document.height() - $window.height())) {
-        return;
-      }
+        // Cancel the event fired by the previous scroll.
+        if (timeout) {
+          clearTimeout(timeout);
+        }
 
-      if (y < lastY) { // Scrolling up
-        // The first scroll up places the bar right above the top frame.
-        if (!revealing) {
-          revealing = true;
-
-          if (lastY > topbarHeight) {
+        if (y < lastY) { // Scrolling up
+          // If the bar is hidden, place it right above the top frame.
+          if (barIsHidden && y >= lastY - topbarHeight) {
             $topbar.css('top', lastY - topbarHeight);
           }
-        }
 
-        // Scrolls up bigger than the bar's height fixes the bar on top.
-        if (parseInt($topbar.css('top')) > y) {
-          $topbar.css({
-            'position': 'fixed',
-            'top': 0
-          });
-        }
-
-        // Fire an event to reveal the entire bar after 400ms if the scroll
-        // wasn't big enough.
-        timeout = setTimeout(function() {
-          if (y < parseInt($topbar.css('top')) + topbarHeight) {
+          // Scrolls up bigger than the bar's height fixes the bar on top.
+          if ($topbar.offset().top >= y) {
             $topbar.css({
               'position': 'fixed',
-              'top': parseInt($topbar.css('top')) - y
+              'top': 0
             });
-
-            $topbar.animate({'top': 0}, 100);
           }
-        }, 400);
-      } else if (y > lastY) { // Scrolling down
-        revealing = false;
 
-        // The first scroll down unfixes the bar allowing it to scroll with the
-        // page.
-        if ($topbar.css('position') == 'fixed') {
-          $topbar.css({
-            'position': 'absolute',
-            'top': lastY
-          });
-        }
+          // Fire an event to reveal the entire bar after 400ms if the scroll
+          // wasn't big enough.
+          timeout = setTimeout(function() {
+            if (y > $topbar.offset().top) {
+              $topbar.css({
+                'position': 'fixed',
+                'top': $topbar.offset().top - y
+              });
 
-        // Fire an event to hide the entire bar after 400ms if the scroll
-        // wasn't big enough.
-        timeout = setTimeout(function() {
-          if (y < parseInt($topbar.css('top')) + topbarHeight) {
-            if (y > topbarHeight) {
+              $topbar.animate({'top': 0}, 100);
+            }
+          }, 400);
+        } else if (y > lastY) { // Scrolling down
+          // Unfix the bar allowing it to scroll with the page.
+          if ($topbar.css('position') == 'fixed') {
+            $topbar.css({
+              'position': 'absolute',
+              'top': lastY
+            });
+          }
+
+          // Fire an event to hide the entire bar after 400ms if the scroll
+          // wasn't big enough.
+          timeout = setTimeout(function() {
+            if (!barIsHidden && y > topbarHeight) {
               $topbar.animate({'top': y - topbarHeight}, 100);
             }
-          }
-        }, 400);
-      }
+          }, 400);
+        }
 
-      lastY = y;
-    });
+        lastY = y;
+      });
+    } else { // Fallback simplified behaviour for iOS.
+      $(document).on('touchstart', function () {
+        lastY = $window.scrollTop();
+      });
+
+      $(document).on('touchend', function () {
+        var y = $window.scrollTop();
+
+        if (y < lastY || y < topbarHeight) { // Scrolling up
+          $topbar.slideDown();
+        } else if (y > lastY) { // Scrolling down
+          $topbar.slideUp();
+        }
+
+        lastY = y;
+      });
+    }
 
     return this;
   };
