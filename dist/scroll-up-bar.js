@@ -6,7 +6,6 @@
     var $window = $(window),
         $document = $(document),
         $topbar = this,
-        topbarHeight = $topbar.outerHeight(),
         lastY = $window.scrollTop(), // Use last Y to detect scroll direction.
         iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
         timeout;
@@ -16,6 +15,7 @@
     if (!iOS) {
       $window.scroll(function() {
         var y = $window.scrollTop(),
+            topbarHeight = $topbar.outerHeight(),
             offsetBottom = $topbar.offset().top + topbarHeight,
             barIsHidden = offsetBottom <= y && y >= topbarHeight;
 
@@ -83,7 +83,7 @@
       $(document).on('touchend', function () {
         var y = $window.scrollTop();
 
-        if (y < lastY || y < topbarHeight) { // Scrolling up
+        if (y < lastY || y < $topbar.outerHeight()) { // Scrolling up
           $topbar.slideDown();
         } else if (y > lastY) { // Scrolling down
           $topbar.slideUp();
