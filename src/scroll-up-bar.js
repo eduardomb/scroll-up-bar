@@ -6,6 +6,7 @@
         $document = $(document),
         $topbar = this,
         lastY = $window.scrollTop(), // Use last Y to detect scroll direction.
+        offsetTop = $topbar.offset().top,
         iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
         timeout;
 
@@ -35,10 +36,18 @@
           }
 
           // Scrolls up bigger than the bar's height fixes the bar on top.
+
           if ($topbar.offset().top >= y) {
             $topbar.css({
               'position': 'fixed',
               'top': 0
+            });
+          }
+
+          if ($topbar.offset().top <= offsetTop) {
+            $topbar.css({
+              'position': 'absolute',
+              'top': offsetTop
             });
           }
 
@@ -54,7 +63,7 @@
               $topbar.animate({'top': 0}, 100);
             }
           }, 400);
-        } else if (y > lastY) { // Scrolling down
+        } else if (y > lastY && y > offsetTop) { // Scrolling down
           // Unfix the bar allowing it to scroll with the page.
           if ($topbar.css('position') == 'fixed') {
             $topbar.css({
