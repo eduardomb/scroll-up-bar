@@ -44,6 +44,8 @@
             });
           }
 
+          // Scrolls up bigger than bar's offset fixes the bar to offset
+
           if ($topbar.offset().top <= offsetTop) {
             $topbar.css({
               'position': 'absolute',
@@ -65,7 +67,7 @@
           }, 400);
         } else if (y > lastY && y > offsetTop) { // Scrolling down
           // Unfix the bar allowing it to scroll with the page.
-          if ($topbar.css('position') == 'fixed') {
+          if ($topbar.css('position') === 'fixed') {
             $topbar.css({
               'position': 'absolute',
               'top': lastY
@@ -75,7 +77,7 @@
           // Fire an event to hide the entire bar after 400ms if the scroll
           // wasn't big enough.
           timeout = setTimeout(function() {
-            if (!barIsHidden && y > topbarHeight) {
+            if (!barIsHidden && (y - offsetTop) > topbarHeight) {
               $topbar.animate({'top': y - topbarHeight}, 100);
             }
           }, 400);
