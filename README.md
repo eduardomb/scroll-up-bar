@@ -22,14 +22,15 @@ bower install scroll-up-bar
 
 ## Usage
 
-Create a fixed top bar.
+Create a top bar using position absolute.
 ```html
-<div id="topbar" style="position: fixed; top: 0; left: 0; width: 100%; background: #ccc;">
+<div id="topbar" style="position: absolute; top: 0; left: 0; width: 100%; background: #ccc;">
   Top bar
 </div>
 ```
+_Tip: you can also add top different than zero_
 
-and then invoke `scrollupbar()` on the element.
+And then invoke `scrollupbar()` on the element.
 ```javascript
 $('#topbar').scrollupbar();
 ```

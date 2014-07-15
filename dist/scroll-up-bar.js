@@ -3,10 +3,20 @@
   'use strict';
 
   $.fn.scrollupbar = function() {
+    function isFullyInViewport() {
+      return $window.scrollTop() <= $bar.offset().top;
+    }
+
+    function isInViewport() {
+      return $window.scrollTop() < $bar.offset().top + $bar.outerHeight();
+    }
+
     var $window = $(window),
         $document = $(document),
-        $topbar = this,
+        $bar = this,
+        minY = $bar.css('position') == 'fixed' ? 0 : $bar.offset().top,
         lastY = $window.scrollTop(), // Use last Y to detect scroll direction.
+        initialPosTop = $bar.position().top,
         iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
         timeout;
 
@@ -15,9 +25,7 @@
     if (!iOS) {
       $window.scroll(function() {
         var y = $window.scrollTop(),
-            topbarHeight = $topbar.outerHeight(),
-            offsetBottom = $topbar.offset().top + topbarHeight,
-            barIsHidden = offsetBottom <= y && y >= topbarHeight;
+            barHeight = $bar.outerHeight();
 
         // Ignore elastic scrolling.
         if (y < 0 || y > ($document.height() - $window.height())) {
@@ -31,44 +39,51 @@
 
         if (y < lastY) { // Scrolling up
           // If the bar is hidden, place it right above the top frame.
-          if (barIsHidden && y >= lastY - topbarHeight) {
-            $topbar.css('top', lastY - topbarHeight);
+          if (!isInViewport() && lastY - barHeight >= minY) {
+            $bar.css('top', lastY - barHeight);
           }
 
           // Scrolls up bigger than the bar's height fixes the bar on top.
-          if ($topbar.offset().top >= y) {
-            $topbar.css({
-              'position': 'fixed',
-              'top': 0
-            });
+          if (isFullyInViewport()) {
+            if (y >= minY) {
+              $bar.css({
+                'position': 'fixed',
+                'top': 0
+              });
+            } else {
+              $bar.css({
+                'position': 'absolute',
+                'top': initialPosTop
+              });
+            }
           }
 
           // Fire an event to reveal the entire bar after 400ms if the scroll
           // wasn't big enough.
           timeout = setTimeout(function() {
-            if (y > $topbar.offset().top) {
-              $topbar.css({
+            if (!isFullyInViewport()) {
+              $bar.css({
                 'position': 'fixed',
-                'top': $topbar.offset().top - y
+                'top': $bar.offset().top - y
               });
 
-              $topbar.animate({'top': 0}, 100);
+              $bar.animate({'top': 0}, 100);
             }
           }, 400);
         } else if (y > lastY) { // Scrolling down
           // Unfix the bar allowing it to scroll with the page.
-          if ($topbar.css('position') == 'fixed') {
-            $topbar.css({
+          if (isFullyInViewport()) {
+            $bar.css({
               'position': 'absolute',
-              'top': lastY
+              'top': lastY > minY ? lastY : initialPosTop
             });
           }
 
           // Fire an event to hide the entire bar after 400ms if the scroll
           // wasn't big enough.
           timeout = setTimeout(function() {
-            if (!barIsHidden && y > topbarHeight) {
-              $topbar.animate({'top': y - topbarHeight}, 100);
+            if (isInViewport() && y - barHeight >= minY) {
+              $bar.animate({'top': y - barHeight}, 100);
             }
           }, 400);
         }
@@ -83,10 +98,10 @@
       $(document).on('touchend', function () {
         var y = $window.scrollTop();
 
-        if (y < lastY || y < $topbar.outerHeight()) { // Scrolling up
-          $topbar.slideDown();
+        if (y < lastY || y < $bar.outerHeight()) { // Scrolling up
+          $bar.slideDown();
         } else if (y > lastY) { // Scrolling down
-          $topbar.slideUp();
+          $bar.slideUp();
         }
 
         lastY = y;

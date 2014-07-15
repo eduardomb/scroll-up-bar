@@ -7,8 +7,8 @@
 
 #topbar {
   box-sizing: border-box;
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 100px;
   left: 0;
   z-index: 1;
   width: 100%;

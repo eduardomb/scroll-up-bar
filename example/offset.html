@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scroll up bar</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial;
+      font-size: 28px;
+      line-height: 1.6;
+    }
+
+    #header {
+      height: 80px;
+      background: #ddd;
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    #topbar {
+      box-sizing: border-box;
+      position: absolute;
+      top: 100px;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+    }
+
+    #document {
+      max-width: 900px;
+      margin: 0 auto;
+      padding-top: 56px;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    Header
+  </div>
+  <div id="topbar">Top bar with offset top</div>
+  <div id="document">
+    <h1>ScrollUpBar plugin example</h1>
+    <p>The scroll up bar plugin hides the top bar when scrolling down, and show
+    it when scrolling up.</p>
+    <p>Usage instructions available on
+    <a href="https://github.com/eduardomb/scroll-up-bar">GitHub</a>. <b>Stop
+    reading now and scroll</b>.</p>
+    <p>Adipisicing harum quam consequatur deserunt minima. Eligendi quos iure
+    voluptatem corrupti amet ipsa a excepturi ratione sit ex est. Ducimus
+    perspiciatis sunt iusto architecto hic possimus tempore harum quasi
+    expedita!</p>
+    <p>Sit iste rerum fugit aliquid vero? In aut quos earum asperiores facilis
+    iste eius. Soluta voluptatum repudiandae dignissimos eius iste mollitia eos
+    veritatis magni commodi. Vero nulla vel error eius?</p>
+    <p>Dolor ab nesciunt deserunt quibusdam quaerat culpa dolor perspiciatis
+    laboriosam consequatur sed? Eligendi praesentium odit itaque assumenda rem
+    maxime ipsum quos pariatur deserunt commodi odio odit?  Quaerat minus illo
+    culpa.</p>
+    <p>Ipsum deleniti natus id assumenda dolore itaque ipsum. Eum nobis
+    necessitatibus eius unde modi. Inventore accusamus vero deleniti aspernatur
+    totam. Nam magni nostrum nesciunt consequatur delectus molestias eveniet
+    velit eveniet.</p>
+    <p>Adipisicing debitis amet repudiandae blanditiis consequatur libero.
+    Mollitia accusamus minima quam ad saepe minus! Et eum aliquam possimus iure
+    iste eveniet ex?  Consequatur repellendus ex architecto voluptate sapiente,
+    molestiae quam.</p>
+    <p>Consectetur numquam debitis commodi minima doloremque voluptas minima
+    sapiente obcaecati veritatis quia corrupti officia mollitia. Sunt modi
+    libero error possimus illo asperiores eum. Aspernatur voluptatem incidunt
+    officiis eos pariatur? Architecto!</p>
+    <p>Elit harum mollitia amet quod facilis! Repudiandae deserunt labore sint
+    officiis assumenda consequuntur sunt accusantium tempora. Officia
+    repellendus corrupti qui impedit ea minus quam magni. Praesentium
+    doloremque veniam delectus officiis.</p>
+    <p>Amet ut ullam ea magnam omnis quidem repellat facilis soluta. Deserunt
+    praesentium eius magnam sapiente beatae quae exercitationem dolores
+    reprehenderit iste facere commodi. Enim ipsa labore laborum adipisci illo
+    sapiente.</p>
+  </div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="../dist/scroll-up-bar.min.js"></script>
+  <script>
+    $('#topbar').scrollupbar();
+  </script>
+</body>
+</html>

@@ -27,11 +27,64 @@ describe('Scrolling', function() {
     window.scrollTo(0, 0);
   });
 
+  it('scroll down should not affect bar before offset is reached', function() {
+    var $topbar = $('#topbar');
+
+    // Install the Jasmine Clock to mock setTimeout.
+    jasmine.clock().install();
+
+    // Invoke scroll-up-bar plugin on topbar.
+    $topbar.scrollupbar();
+
+    scrollDown(50);
+
+    // Expect the bar to be on its original position.
+    expect($topbar.offset().top).toBe(100);
+
+    // Wait 401ms, when the complete hiding will be triggered.
+    jasmine.clock().tick(401);
+
+    // Expect the bar to still be on its original position
+    expect($topbar.offset().top).toBe(100);
+
+    // Uninstall Jasmine Clock.
+    jasmine.clock().uninstall();
+  });
+
+  it('scroll up should not affect bar before offset is reached', function() {
+    var $topbar = $('#topbar');
+
+    // Install the Jasmine Clock to mock setTimeout.
+    jasmine.clock().install();
+
+    // Invoke scroll-up-bar plugin on topbar.
+    $topbar.scrollupbar();
+
+    scrollDown(120);
+
+    scrollUp(50);
+
+    // Expect the bar to be on its original position.
+    expect($topbar.offset().top).toBe(100);
+
+    // Wait 401ms, when the complete hiding will be triggered.
+    jasmine.clock().tick(401);
+
+    // Expect the bar to still be on its original position
+    expect($topbar.offset().top).toBe(100);
+
+    // Uninstall Jasmine Clock.
+    jasmine.clock().uninstall();
+  });
+
   it('should hide the bar on scroll down', function() {
     var $topbar = $('#topbar'),
         topbarHeight = $topbar.outerHeight();
 
     $topbar.scrollupbar();
+
+    // Scroll down 'till bar offset.
+    scrollDown(100);
 
     scrollDown(topbarHeight);
 
@@ -44,6 +97,9 @@ describe('Scrolling', function() {
         topbarHeight = $topbar.outerHeight();
 
     $topbar.scrollupbar();
+
+    // Scroll down 'till bar offset.
+    scrollDown(100);
 
     // In order to scroll up, we need to scroll down first.
     scrollDown(2 * topbarHeight);
@@ -61,6 +117,9 @@ describe('Scrolling', function() {
     jasmine.clock().install();
 
     $topbar.scrollupbar();
+
+    // Scroll down 'till bar offset.
+    scrollDown(100);
 
     // In order to scroll up, we need to scroll down first.
     scrollDown(2 * topbarHeight);
@@ -87,6 +146,9 @@ describe('Scrolling', function() {
     jasmine.clock().install();
 
     $topbar.scrollupbar();
+
+    // Scroll down 'till bar offset.
+    scrollDown(100);
 
     // Scroll away from page top, then scroll up to reveal the bar and finally
     // do a tiny scroll down.
@@ -116,6 +178,9 @@ describe('Scrolling', function() {
 
     // Invoke scroll-up-bar plugin on topbar.
     $topbar.scrollupbar();
+
+    // Scroll down 'till bar offset.
+    scrollDown(100);
 
     scrollDown(0.5 * topbarHeight);
 
