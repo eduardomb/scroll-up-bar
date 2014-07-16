@@ -3,16 +3,20 @@ jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
 
 describe('Scrolling', function() {
   'use strict';
+  // Returns page Y offset. Don't use window.scrollY or tests will crash on IE.
+  var pageY = function() {
+    return $(window).scrollTop();
+  };
 
   // Perform the scroll up and fire the scroll event.
   var scrollUp = function(px) {
-    window.scrollTo(0, window.scrollY - px);
+    window.scrollTo(0, pageY() - px);
     $('html').trigger('scroll');
   };
 
   // Perform the scroll down and fire the scroll event.
   var scrollDown = function(px) {
-    window.scrollTo(0, window.scrollY + px);
+    window.scrollTo(0, pageY() + px);
     $('html').trigger('scroll');
   };
 
@@ -22,6 +26,9 @@ describe('Scrolling', function() {
 
     // Disable animations.
     jQuery.fx.off = true;
+
+    // Destroy plugin instances from previous tests.
+    $.scrollupbar.destroy();
 
     // Reset scroll before each test.
     window.scrollTo(0, 0);
@@ -89,7 +96,7 @@ describe('Scrolling', function() {
     scrollDown(topbarHeight);
 
     // Expect the bar not to be visible.
-    expect($topbar.offset().top + topbarHeight <= window.scrollY).toBeTruthy();
+    expect($topbar.offset().top + topbarHeight <= pageY()).toBeTruthy();
   });
 
   it('should show the bar on scroll up', function() {
@@ -106,7 +113,7 @@ describe('Scrolling', function() {
     scrollUp(topbarHeight);
 
     // Expect the bar to be visible.
-    expect($topbar.offset().top).toBe(window.scrollY);
+    expect($topbar.offset().top).toBe(pageY());
   });
 
   it('should finish showing the bar after a tiny scroll up', function() {
@@ -126,13 +133,13 @@ describe('Scrolling', function() {
     scrollUp(0.5 * topbarHeight);
 
     // Expect the bar to be partially visible.
-    expect($topbar.offset().top).toBe(window.scrollY - 0.5 * topbarHeight);
+    expect($topbar.offset().top).toBe(pageY() - 0.5 * topbarHeight);
 
     // Wait 401ms, when the complete showing will be triggered.
     jasmine.clock().tick(401);
 
     // Expect the bar to be fully visible.
-    expect($topbar.offset().top).toBe(window.scrollY);
+    expect($topbar.offset().top).toBe(pageY());
 
     // Uninstall Jasmine Clock.
     jasmine.clock().uninstall();
@@ -157,13 +164,13 @@ describe('Scrolling', function() {
     scrollDown(0.5 * topbarHeight);
 
     // Expect the bar to be partially visible.
-    expect($topbar.offset().top).toBe(window.scrollY - 0.5 * topbarHeight);
+    expect($topbar.offset().top).toBe(pageY() - 0.5 * topbarHeight);
 
     // Wait 401ms, when the complete hiding will be triggered.
     jasmine.clock().tick(401);
 
     // Expect the bar not to be visible.
-    expect($topbar.offset().top + topbarHeight <= window.scrollY).toBeTruthy();
+    expect($topbar.offset().top + topbarHeight <= pageY()).toBeTruthy();
 
     // Uninstall Jasmine Clock.
     jasmine.clock().uninstall();
@@ -185,13 +192,13 @@ describe('Scrolling', function() {
     scrollDown(0.5 * topbarHeight);
 
     // Expect the bar to be partially visible.
-    expect($topbar.offset().top).toBe(window.scrollY - 0.5 * topbarHeight);
+    expect($topbar.offset().top).toBe(pageY() - 0.5 * topbarHeight);
 
     // Wait 401ms, when the complete hiding might be triggered.
     jasmine.clock().tick(401);
 
     // Expect the bar to still be partially visible.
-    expect($topbar.offset().top).toBe(window.scrollY - 0.5 * topbarHeight);
+    expect($topbar.offset().top).toBe(pageY() - 0.5 * topbarHeight);
 
     // Uninstall Jasmine Clock.
     jasmine.clock().uninstall();
