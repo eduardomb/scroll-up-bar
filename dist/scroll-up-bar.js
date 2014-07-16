@@ -1,4 +1,4 @@
-/* scroll-up-bar v0.2.0 (https://github.com/eduardomb/scroll-up-bar) */
+/* scroll-up-bar v0.3.0 (https://github.com/eduardomb/scroll-up-bar) */
 (function($) {
   'use strict';
 
@@ -133,10 +133,42 @@
       $window.on('touchend.scrollupbar', function () {
         var y = $window.scrollTop();
 
-        if (y < lastY || y < $bar.outerHeight()) { // Scrolling up
-          $bar.slideDown();
+        if (y < lastY || y - $bar.outerHeight() < minY) { // Scrolling up
+          if (y <= minY) {
+            // Restore original position.
+            $bar.css({
+              'position': 'absolute',
+              'top': initialPosTop
+            });
+
+            $bar.show(function() {
+              $.scrollupbar.isInViewport = true;
+              $.scrollupbar.isFullyInViewport = true;
+              options.enterViewport();
+              options.fullyEnterViewport();
+            });
+          } else {
+            $bar.css({
+              'position': 'fixed',
+              'top': 0
+            });
+
+            $.scrollupbar.isInViewport = true;
+            options.enterViewport();
+
+            $bar.slideDown(function() {
+              $.scrollupbar.isFullyInViewport = true;
+              options.fullyEnterViewport();
+            });
+          }
         } else if (y > lastY) { // Scrolling down
-          $bar.slideUp();
+          $.scrollupbar.isFullyInViewport = false;
+          options.partiallyExitViewport();
+
+          $bar.slideUp(function() {
+            $.scrollupbar.isInViewport = false;
+            options.exitViewport();
+          });
         }
 
         lastY = y;

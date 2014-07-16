@@ -1,6 +1,6 @@
 {
   "name": "scroll-up-bar",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The scroll up bar plugin (jQuery) hides the top bar when scrolling down, and show it when scrolling up.",
   "main": "scroll-up-bar.js",
   "scripts": {
