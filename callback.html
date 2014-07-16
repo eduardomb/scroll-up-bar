@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scroll up bar</title>
   <style>
+    html,
+    body {
+      margin: 0;
+    }
+
     body {
       font-family: Arial;
       font-size: 28px;
@@ -12,7 +18,7 @@
 
     #topbar {
       box-sizing: border-box;
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       z-index: 1;
@@ -28,17 +34,32 @@
       margin: 0 auto;
       padding-top: 56px;
     }
+
+    #footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      background: #ccc;
+      text-align: center;
+    }
+
+    #is-in-viewport,
+    #is-fully-in-viewport,
+    #last-event {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <div id="topbar">Top bar</div>
+  <div id="topbar">Top bar with callbacks</div>
   <div id="document">
     <h1>ScrollUpBar plugin example</h1>
     <p>The scroll up bar plugin hides the top bar when scrolling down, and show
     it when scrolling up.</p>
-    <p>Other examples: <a href="offset.html">bar with offset</a> and
-    <a href="callback.html">viewport callbacks</a>.</p>
     <p>Usage instructions available on
+    <p>Other examples: <a href="/">simple</a> and
+    <a href="offset.html">bar with offset</a></p>
     <a href="https://github.com/eduardomb/scroll-up-bar">GitHub</a>. <b>Stop
     reading now and scroll</b>.</p>
     <p>Adipisicing harum quam consequatur deserunt minima. Eligendi quos iure
@@ -73,10 +94,41 @@
     reprehenderit iste facere commodi. Enim ipsa labore laborum adipisci illo
     sapiente.</p>
   </div>
+
+  <div id="footer">
+    <p>Is in viewport? <span id="is-in-viewport"></span> /
+    Is Fully in viewport? <span id="is-fully-in-viewport"></span> /
+    Last event: <span id="last-event"></span></p>
+  </div>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="scroll-up-bar.min.js"></script>
   <script>
-    $('#topbar').scrollupbar();
+    // Update footer with current viewport state.
+    function updateFooter() {
+      $('#is-in-viewport').text($.scrollupbar.isInViewport ? 'yes' : 'no');
+      $('#is-fully-in-viewport').text($.scrollupbar.isFullyInViewport ? 'yes' : 'no');
+    }
+
+    $('#topbar').scrollupbar({
+      enterViewport: function() {
+        updateFooter();
+        $('#last-event').text('enterViewport');
+      },
+      fullyEnterViewport: function() {
+        updateFooter();
+        $('#last-event').text('fullyEnterViewport');
+      },
+      exitViewport: function() {
+        updateFooter();
+        $('#last-event').text('exitViewport');
+      },
+      partiallyExitViewport: function() {
+        updateFooter();
+        $('#last-event').text('partiallyExitViewport');
+      }
+    });
+
+    updateFooter();
   </script>
 </body>
 </html>

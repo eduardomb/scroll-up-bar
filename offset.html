@@ -4,16 +4,29 @@
   <meta charset="UTF-8">
   <title>Scroll up bar</title>
   <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: Arial;
       font-size: 28px;
       line-height: 1.6;
     }
 
+    #header {
+      height: 80px;
+      background: #ddd;
+      text-align: center;
+      padding-top: 20px;
+    }
+
     #topbar {
       box-sizing: border-box;
-      position: fixed;
-      top: 0;
+      position: absolute;
+      top: 100px;
       left: 0;
       z-index: 1;
       width: 100%;
@@ -31,14 +44,17 @@
   </style>
 </head>
 <body>
-  <div id="topbar">Top bar</div>
+  <div id="header">
+    Header
+  </div>
+  <div id="topbar">Top bar with offset top</div>
   <div id="document">
     <h1>ScrollUpBar plugin example</h1>
     <p>The scroll up bar plugin hides the top bar when scrolling down, and show
     it when scrolling up.</p>
-    <p>Other examples: <a href="offset.html">bar with offset</a> and
-    <a href="callback.html">viewport callbacks</a>.</p>
     <p>Usage instructions available on
+    <p>Other examples: <a href="/">simple</a> and
+    <a href="callback.html">viewport callbacks</a></p>
     <a href="https://github.com/eduardomb/scroll-up-bar">GitHub</a>. <b>Stop
     reading now and scroll</b>.</p>
     <p>Adipisicing harum quam consequatur deserunt minima. Eligendi quos iure
