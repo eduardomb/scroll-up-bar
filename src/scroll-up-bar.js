@@ -9,7 +9,8 @@
       enterViewport: $.noop,
       fullyEnterViewport: $.noop,
       exitViewport: $.noop,
-      partiallyExitViewport: $.noop
+      partiallyExitViewport: $.noop,
+	  speed: 400 // default slideUp/slideDown speed
     }, options);
 
     function isFullyInViewport() {
@@ -155,7 +156,7 @@
             $.scrollupbar.isInViewport = true;
             options.enterViewport();
 
-            $bar.slideDown(function() {
+            $bar.slideDown(options.speed, function() {
               $.scrollupbar.isFullyInViewport = true;
               options.fullyEnterViewport();
             });
@@ -164,7 +165,7 @@
           $.scrollupbar.isFullyInViewport = false;
           options.partiallyExitViewport();
 
-          $bar.slideUp(function() {
+          $bar.slideUp(options.speed, function() {
             $.scrollupbar.isInViewport = false;
             options.exitViewport();
           });
