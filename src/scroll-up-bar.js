@@ -10,7 +10,7 @@
       fullyEnterViewport: $.noop,
       exitViewport: $.noop,
       partiallyExitViewport: $.noop,
-	  speed: 400 // default slideUp/slideDown speed
+      speed: 400 // default slideUp/slideDown speed
     }, options);
 
     function isFullyInViewport() {
