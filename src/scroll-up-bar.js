@@ -9,9 +9,7 @@
       enterViewport: $.noop,
       fullyEnterViewport: $.noop,
       exitViewport: $.noop,
-      partiallyExitViewport: $.noop,
-      delay: 400,
-      speed: 200
+      partiallyExitViewport: $.noop
     }, options);
 
     function isFullyInViewport() {
@@ -32,94 +30,96 @@
     $.scrollupbar.isInViewport = isInViewport();
     $.scrollupbar.isFullyInViewport = isFullyInViewport();
 
-      $window.on('scroll.scrollupbar', function() {
-        var y = $window.scrollTop(),
-            barHeight = $bar.outerHeight();
+    $window.on('scroll.scrollupbar', function() {
+      var y = $window.scrollTop(),
+          barHeight = $bar.outerHeight();
 
-        // Ignore elastic scrolling.
-        if (y < 0 || y > ($document.height() - $window.height())) {
-          return;
+      // Ignore elastic scrolling.
+      if (y < 0 || y > ($document.height() - $window.height())) {
+        return;
+      }
+
+      // Cancel the event fired by the previous scroll.
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+
+      if (y < lastY) { // Scrolling up
+        // If the bar is hidden, place it right above the top frame.
+        if (!$.scrollupbar.isInViewport && lastY - barHeight >= minY) {
+          $bar.css('top', lastY - barHeight);
+          $.scrollupbar.isInViewport = true;
+          options.enterViewport();
         }
 
-        // Cancel the event fired by the previous scroll.
-        if (timeout) {
-          clearTimeout(timeout);
-        }
-
-        if (y < lastY) { // Scrolling up
-          // If the bar is hidden, place it right above the top frame.
-          if (!$.scrollupbar.isInViewport && lastY - barHeight >= minY) {
-            $bar.css('top', lastY - barHeight);
-            $.scrollupbar.isInViewport = true;
-            options.enterViewport();
-          }
-
-          // Scrolls up bigger than the bar's height fixes the bar on top.
-          if (isFullyInViewport()) {
-            if (y >= minY) {
-              $bar.css({
-                'position': 'fixed',
-                'top': 0
-              });
-            } else {
-              $bar.css({
-                'position': 'absolute',
-                'top': initialPosTop
-              });
-            }
-
-            if (!$.scrollupbar.isFullyInViewport) {
-              $.scrollupbar.isFullyInViewport = true;
-              options.fullyEnterViewport();
-            }
-          }
-
-          // Fire an event to reveal the entire bar after [options.delay]ms if the scroll
-          // wasn't big enough.
-          timeout = setTimeout(function() {
-            if (!$.scrollupbar.isFullyInViewport) {
-              $bar.css({
-                'position': 'fixed',
-                'top': $bar.offset().top - y
-              });
-
-              $bar.animate({'top': 0}, options.speed, function() {
-                $.scrollupbar.isFullyInViewport = true;
-                options.fullyEnterViewport();
-              });
-            }
-          }, options.delay);
-        } else if (y > lastY) { // Scrolling down
-          // Unfix the bar allowing it to scroll with the page.
-          if ($.scrollupbar.isFullyInViewport) {
+        // Scrolls up bigger than the bar's height fixes the bar on top.
+        if (isFullyInViewport()) {
+          if (y >= minY) {
             $bar.css({
-              'transform': 'translate3d(0,0,0)', // Fix for iOS invisible element bug when changing position values while scrolling
+              'position': 'fixed',
+              'top': 0
+            });
+          } else {
+            $bar.css({
               'position': 'absolute',
-              'top': lastY > minY ? lastY : initialPosTop
+              'top': initialPosTop
+            });
+          }
+
+          if (!$.scrollupbar.isFullyInViewport) {
+            $.scrollupbar.isFullyInViewport = true;
+            options.fullyEnterViewport();
+          }
+        }
+
+        // Fire an event to reveal the entire bar after 400ms if the scroll
+        // wasn't big enough.
+        timeout = setTimeout(function() {
+          if (!$.scrollupbar.isFullyInViewport) {
+            $bar.css({
+              'position': 'fixed',
+              'top': $bar.offset().top - y
             });
 
-            if (!isFullyInViewport()) {
-              $.scrollupbar.isFullyInViewport = false;
-              options.partiallyExitViewport();
-            }
+            $bar.animate({'top': 0}, 100, function() {
+              $.scrollupbar.isFullyInViewport = true;
+              options.fullyEnterViewport();
+            });
           }
+        }, 400);
+      } else if (y > lastY) { // Scrolling down
+        // Unfix the bar allowing it to scroll with the page.
+        if ($.scrollupbar.isFullyInViewport) {
+          $bar.css({
+            // translate3d fixes iOS invisible element bug when changing
+            // position values while scrolling.
+            'transform': 'translate3d(0, 0, 0)',
+            'position': 'absolute',
+            'top': lastY > minY ? lastY : initialPosTop
+          });
 
-          if ($.scrollupbar.isInViewport && !isInViewport()) {
-            $.scrollupbar.isInViewport = false;
-            options.exitViewport();
+          if (!isFullyInViewport()) {
+            $.scrollupbar.isFullyInViewport = false;
+            options.partiallyExitViewport();
           }
-
-          // Fire an event to hide the entire bar after [options.delay]ms if the scroll
-          // wasn't big enough.
-          timeout = setTimeout(function() {
-            if (isInViewport() && y - barHeight >= minY) {
-              $bar.animate({'top': y - barHeight}, options.speed, function() {
-                $.scrollupbar.isInViewport = false;
-                options.exitViewport();
-              });
-            }
-          }, options.delay);
         }
+
+        if ($.scrollupbar.isInViewport && !isInViewport()) {
+          $.scrollupbar.isInViewport = false;
+          options.exitViewport();
+        }
+
+        // Fire an event to hide the entire bar after 400ms if the scroll
+        // wasn't big enough.
+        timeout = setTimeout(function() {
+          if (isInViewport() && y - barHeight >= minY) {
+            $bar.animate({'top': y - barHeight}, 100, function() {
+              $.scrollupbar.isInViewport = false;
+              options.exitViewport();
+            });
+          }
+        }, 400);
+      }
 
       lastY = y;
     });
